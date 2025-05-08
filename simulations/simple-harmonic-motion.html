@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Harmonic Motion - PhysicsLab</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .simulation-container {
+            background: var(--glass-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .controls-section {
+            background: var(--glass-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .info-card {
+            background: var(--glass-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .info-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .parameter-value {
+            font-weight: 500;
+            color: var(--accent-color);
+        }
+
+        .equation-card {
+            background: var(--glass-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .equation-card h5 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .equation-card p {
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        canvas {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Space Animation Elements -->
+    <div class="stars"></div>
+    <div class="nebula"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <i class="fas fa-atom"></i> PhysicsLab
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="../index.html#simulations">Simulations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#concepts">Concepts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="glass-card">
+                    <h1 class="text-center mb-4">Simple Harmonic Motion</h1>
+                    
+                    <!-- Simulation Canvas -->
+                    <div class="simulation-container">
+                        <canvas id="shmCanvas" width="600" height="400"></canvas>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="controls-section">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <label>Mass (kg):</label>
+                                    <input type="range" id="massSlider" min="0.1" max="5" value="1" step="0.1" class="form-range">
+                                    <span id="massValue">1.0 kg</span>
+                                </div>
+                                <div class="control-group">
+                                    <label>Spring Constant (N/m):</label>
+                                    <input type="range" id="springSlider" min="1" max="100" value="10" class="form-range">
+                                    <span id="springValue">10 N/m</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <label>Initial Displacement (m):</label>
+                                    <input type="range" id="displacementSlider" min="-2" max="2" value="1" step="0.1" class="form-range">
+                                    <span id="displacementValue">1.0 m</span>
+                                </div>
+                                <div class="control-group">
+                                    <label>Damping Coefficient:</label>
+                                    <input type="range" id="dampingSlider" min="0" max="1" value="0" step="0.01" class="form-range">
+                                    <span id="dampingValue">0.0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12 text-center">
+                                <button id="startBtn" class="btn btn-primary me-2">Start</button>
+                                <button id="resetBtn" class="btn btn-secondary">Reset</button>
+                                <div class="form-check form-check-inline ms-3">
+                                    <input class="form-check-input" type="checkbox" id="showEnergy">
+                                    <label class="form-check-label" for="showEnergy">Show Energy</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Information -->
+                    <div class="info-section">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="info-card">
+                                    <h4>Position</h4>
+                                    <p>Displacement: <span id="infoDisplacement" class="parameter-value">1.0</span> m</p>
+                                    <p>Velocity: <span id="infoVelocity" class="parameter-value">0.0</span> m/s</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="info-card">
+                                    <h4>Energy</h4>
+                                    <p>Kinetic: <span id="infoKinetic" class="parameter-value">0.0</span> J</p>
+                                    <p>Potential: <span id="infoPotential" class="parameter-value">5.0</span> J</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="info-card">
+                                    <h4>System</h4>
+                                    <p>Period: <span id="infoPeriod" class="parameter-value">1.99</span> s</p>
+                                    <p>Frequency: <span id="infoFrequency" class="parameter-value">0.50</span> Hz</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="glass-card">
+                    <h4 class="mb-4">SHM Equations</h4>
+                    
+                    <div class="equation-card">
+                        <h5>Position</h5>
+                        <p>x(t) = A * cos(ωt + φ)</p>
+                        <p>where:</p>
+                        <p>A = amplitude</p>
+                        <p>ω = √(k/m)</p>
+                        <p>φ = phase angle</p>
+                    </div>
+
+                    <div class="equation-card">
+                        <h5>Velocity</h5>
+                        <p>v(t) = -Aω * sin(ωt + φ)</p>
+                    </div>
+
+                    <div class="equation-card">
+                        <h5>Acceleration</h5>
+                        <p>a(t) = -Aω² * cos(ωt + φ)</p>
+                    </div>
+
+                    <div class="equation-card">
+                        <h5>Energy</h5>
+                        <p>Total Energy = ½kA²</p>
+                        <p>Kinetic Energy = ½mv²</p>
+                        <p>Potential Energy = ½kx²</p>
+                    </div>
+
+                    <div class="equation-card">
+                        <h5>Current Parameters</h5>
+                        <p>Mass (m): <span id="paramMass" class="parameter-value">1.0</span> kg</p>
+                        <p>Spring Constant (k): <span id="paramSpring" class="parameter-value">10</span> N/m</p>
+                        <p>Initial Displacement: <span id="paramDisplacement" class="parameter-value">1.0</span> m</p>
+                        <p>Angular Frequency: <span id="paramOmega" class="parameter-value">3.16</span> rad/s</p>
+                        <p>Period: <span id="paramPeriod" class="parameter-value">1.99</span> s</p>
+                        <p>Frequency: <span id="paramFrequency" class="parameter-value">0.50</span> Hz</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>About PhysicsLab</h5>
+                    <p>An interactive platform for learning physics through simulations and demonstrations.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../index.html#simulations">Simulations</a></li>
+                        <li><a href="../index.html#concepts">Concepts</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contact</h5>
+                    <p>Created by <a href="https://alimulavro.netlify.app" target="_blank">Alimul Avro</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        const canvas = document.getElementById('shmCanvas');
+        const ctx = canvas.getContext('2d');
+        let animationId;
+
+        // System parameters
+        let system = {
+            mass: 1.0,
+            springConstant: 10,
+            displacement: 1.0,
+            velocity: 0,
+            damping: 0,
+            time: 0,
+            isMoving: false
+        };
+
+        // Scale factors for visualization
+        const scaleX = canvas.width / 4;  // 4 meters wide
+        const scaleY = canvas.height / 4; // 4 meters high
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        // Update system parameters from controls
+        document.getElementById('massSlider').oninput = function() {
+            system.mass = parseFloat(this.value);
+            document.getElementById('massValue').textContent = this.value + ' kg';
+            document.getElementById('paramMass').textContent = this.value;
+            updateParameters();
+            resetSystem();
+        };
+
+        document.getElementById('springSlider').oninput = function() {
+            system.springConstant = parseFloat(this.value);
+            document.getElementById('springValue').textContent = this.value + ' N/m';
+            document.getElementById('paramSpring').textContent = this.value;
+            updateParameters();
+            resetSystem();
+        };
+
+        document.getElementById('displacementSlider').oninput = function() {
+            system.displacement = parseFloat(this.value);
+            document.getElementById('displacementValue').textContent = this.value + ' m';
+            document.getElementById('paramDisplacement').textContent = this.value;
+            resetSystem();
+        };
+
+        document.getElementById('dampingSlider').oninput = function() {
+            system.damping = parseFloat(this.value);
+            document.getElementById('dampingValue').textContent = this.value;
+            resetSystem();
+        };
+
+        document.getElementById('startBtn').onclick = function() {
+            if (!system.isMoving) {
+                startSystem();
+            }
+        };
+
+        document.getElementById('resetBtn').onclick = resetSystem;
+
+        function updateParameters() {
+            const omega = Math.sqrt(system.springConstant / system.mass);
+            const period = 2 * Math.PI / omega;
+            const frequency = 1 / period;
+
+            document.getElementById('paramOmega').textContent = omega.toFixed(2);
+            document.getElementById('paramPeriod').textContent = period.toFixed(2);
+            document.getElementById('paramFrequency').textContent = frequency.toFixed(2);
+        }
+
+        function startSystem() {
+            system.isMoving = true;
+            system.time = 0;
+            animate();
+        }
+
+        function resetSystem() {
+            system.velocity = 0;
+            system.time = 0;
+            system.isMoving = false;
+            cancelAnimationFrame(animationId);
+            drawSystem();
+            updateInfo();
+        }
+
+        function animate() {
+            if (!system.isMoving) return;
+
+            const timeStep = 0.016; // 60 FPS
+            system.time += timeStep;
+
+            // Calculate acceleration (F = ma = -kx - bv)
+            const force = -system.springConstant * system.displacement - system.damping * system.velocity;
+            const acceleration = force / system.mass;
+
+            // Update velocity and position using Euler integration
+            system.velocity += acceleration * timeStep;
+            system.displacement += system.velocity * timeStep;
+
+            drawSystem();
+            updateInfo();
+            animationId = requestAnimationFrame(animate);
+        }
+
+        function drawSystem() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw equilibrium line
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(canvas.width, centerY);
+            ctx.stroke();
+
+            // Draw spring
+            const springLength = 100;
+            const springWidth = 20;
+            const springX = centerX - springLength;
+            const springY = centerY;
+            const massX = centerX + system.displacement * scaleX;
+            const massY = centerY;
+
+            ctx.strokeStyle = '#4a90e2';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(springX, springY);
+            
+            // Draw spring coils
+            const numCoils = 8;
+            const coilWidth = springLength / numCoils;
+            for (let i = 0; i < numCoils; i++) {
+                const x1 = springX + i * coilWidth;
+                const x2 = x1 + coilWidth / 2;
+                const y1 = springY + (i % 2 === 0 ? springWidth : -springWidth);
+                ctx.lineTo(x2, y1);
+            }
+            ctx.lineTo(massX, massY);
+            ctx.stroke();
+
+            // Draw mass
+            ctx.fillStyle = '#4a90e2';
+            ctx.beginPath();
+            ctx.arc(massX, massY, 20, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw energy bar if enabled
+            if (document.getElementById('showEnergy').checked) {
+                const totalEnergy = 0.5 * system.springConstant * system.displacement * system.displacement +
+                                  0.5 * system.mass * system.velocity * system.velocity;
+                const maxEnergy = 0.5 * system.springConstant * 4; // Maximum possible energy
+                const energyHeight = (totalEnergy / maxEnergy) * 100;
+
+                ctx.fillStyle = 'rgba(74, 144, 226, 0.3)';
+                ctx.fillRect(10, canvas.height - energyHeight - 10, 20, energyHeight);
+            }
+
+            // Draw scale markers
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.lineWidth = 1;
+            for (let i = -2; i <= 2; i++) {
+                const x = centerX + i * scaleX;
+                ctx.beginPath();
+                ctx.moveTo(x, centerY - 5);
+                ctx.lineTo(x, centerY + 5);
+                ctx.stroke();
+                ctx.fillStyle = '#2d3436';
+                ctx.fillText(i.toString(), x - 5, centerY + 20);
+            }
+        }
+
+        function updateInfo() {
+            const kineticEnergy = 0.5 * system.mass * system.velocity * system.velocity;
+            const potentialEnergy = 0.5 * system.springConstant * system.displacement * system.displacement;
+            const omega = Math.sqrt(system.springConstant / system.mass);
+            const period = 2 * Math.PI / omega;
+            const frequency = 1 / period;
+
+            document.getElementById('infoDisplacement').textContent = system.displacement.toFixed(2);
+            document.getElementById('infoVelocity').textContent = system.velocity.toFixed(2);
+            document.getElementById('infoKinetic').textContent = kineticEnergy.toFixed(2);
+            document.getElementById('infoPotential').textContent = potentialEnergy.toFixed(2);
+            document.getElementById('infoPeriod').textContent = period.toFixed(2);
+            document.getElementById('infoFrequency').textContent = frequency.toFixed(2);
+        }
+
+        // Initialize
+        updateParameters();
+        resetSystem();
+
+        // Cleanup on page unload
+        window.onunload = function() {
+            cancelAnimationFrame(animationId);
+        };
+    </script>
+</body>
+</html> 

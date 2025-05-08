@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhysicsLab by Alimul AVRO</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Space Animation Elements -->
+    <div class="stars"></div>
+    <div class="nebula"></div>
+    
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-atom"></i> PhysicsLab
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#simulations">Simulations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#concepts">Concepts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="glow-text">PhysicsLab Simulations</h1>
+                <p class="subtitle">Interactive Physics Simulations for Curious Minds</p>
+                <div class="cta-buttons">
+                    <a href="#simulations" class="btn btn-primary glow-button">Explore Simulations</a>
+                    <a href="#concepts" class="btn btn-secondary glow-button">Learn Concepts</a>
+                </div>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simulations Section -->
+    <section id="simulations" class="simulations-section">
+        <div class="container">
+            <h2 class="section-title">Interactive Simulations</h2>
+            <div class="row">
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="glass-card h-100">
+                        <div class="simulation-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Projectile Motion</h3>
+                        <p>Explore the motion of projectiles under gravity with adjustable parameters.</p>
+                        <a href="simulations/projectile-motion.html" class="btn btn-primary">Launch Simulation</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="glass-card h-100">
+                        <div class="simulation-icon">
+                            <i class="fas fa-wave-square"></i>
+                        </div>
+                        <h3>Wave Interference</h3>
+                        <p>Study wave superposition and interference patterns in real-time.</p>
+                        <a href="simulations/wave-interference.html" class="btn btn-primary">Launch Simulation</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="glass-card h-100">
+                        <div class="simulation-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3>Circuit Builder</h3>
+                        <p>Build and analyze electrical circuits with interactive components.</p>
+                        <a href="simulations/circuit-builder.html" class="btn btn-primary">Launch Simulation</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="glass-card h-100">
+                        <div class="simulation-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3>Lens Simulator</h3>
+                        <p>Explore ray optics and image formation with different lens configurations.</p>
+                        <a href="simulations/lens-simulator.html" class="btn btn-primary">Launch Simulation</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="glass-card h-100">
+                        <div class="simulation-icon">
+                            <i class="fas fa-spring"></i>
+                        </div>
+                        <h3>Simple Harmonic Motion</h3>
+                        <p>Investigate oscillatory motion with a spring-mass system.</p>
+                        <a href="simulations/simple-harmonic-motion.html" class="btn btn-primary">Launch Simulation</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="glass-card h-100">
+                        <div class="simulation-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Double Pendulum</h3>
+                        <p>Experience chaotic motion with this classic physics demonstration.</p>
+                        <a href="simulations/double-pendulum.html" class="btn btn-primary">Launch Simulation</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Concepts Section -->
+    <section id="concepts" class="concepts-section">
+        <div class="container">
+            <h2 class="section-title">Physics Concepts</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="glass-card concept-card h-100">
+                        <div class="concept-icon">
+                            <i class="fas fa-atom"></i>
+                        </div>
+                        <h3>Newton's Laws of Motion</h3>
+                        <p>Explore the fundamental principles that govern motion and forces in our universe.</p>
+                        <a href="concepts/newtons-laws.html" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="glass-card concept-card h-100">
+                        <div class="concept-icon">
+                            <i class="fas fa-wave-square"></i>
+                        </div>
+                        <h3>Wave Interference</h3>
+                        <p>Discover how waves interact and create fascinating patterns through interference.</p>
+                        <a href="concepts/wave-interference.html" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="glass-card concept-card h-100">
+                        <div class="concept-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3>Electric Circuits</h3>
+                        <p>Learn about current, voltage, and resistance in electrical circuits.</p>
+                        <a href="concepts/electric-circuits.html" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <h2 class="section-title">About</h2>
+            <div class="row align-items-center">
+                <div class="col-md-4">
+                    <div class="profile-image">
+                        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEihj3-NS_7x7OKeZRaYtYFPXA3iV3YEV75sbb_2hFntczH-qR82OwBZt-Fjdh065RFqXgLCWq9ku1EjwCI1OiMDsOkLWx9qFZN-U3ypXGBZnRAFpIMij7ISIip6dA9E_pOl_cQqLz1TAKA6NPwkpBlJSBuwCuUCvtfQR91iXaOmNynNba6mY-Djj2zddSI" alt="Alimul AVRO" class="img-fluid">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="about-content">
+                        <h3>Alimul AVRO</h3>
+                        <p>Physics enthusiast and web developer passionate about making physics education accessible and engaging through interactive simulations. With a strong background in both physics and programming, I create educational tools that help students visualize and understand complex physical concepts.</p>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="glass-card">
+                                <i class="fas fa-eye mb-3"></i>
+                                <h4>Vision</h4>
+                                <p>Making physics education accessible to everyone through interactive learning.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="glass-card">
+                                <i class="fas fa-bullseye mb-3"></i>
+                                <h4>Mission</h4>
+                                <p>Creating engaging and accurate physics simulations for better understanding.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="glass-card">
+                                <i class="fas fa-code mb-3"></i>
+                                <h4>Tech Stack</h4>
+                                <p>HTML5, CSS3, JavaScript, Bootstrap</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">Contact</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <form class="contact-form">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Your Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" placeholder="Your Email" required>
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary glow-button">Send Message</button>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <div class="contact-info">
+                        <div class="info-card">
+                            <i class="fas fa-envelope"></i>
+                            <h4>Email</h4>
+                            <p><a href="mailto:avroalimul@gmail.com">avroalimul@gmail.com</a></p>
+                        </div>
+                        <div class="info-card">
+                            <i class="fab fa-github"></i>
+                            <h4>GitHub</h4>
+                            <p><a href="https://github.com/alimulavro" target="_blank">github.com/alimulavro</a></p>
+                        </div>
+                        <div class="info-card">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <h4>Location</h4>
+                            <p>Kushtia, Bangladesh</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="#simulations">Simulations</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Connect</h5>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h5>About</h5>
+                    <p>PhysicsLab is an interactive platform for learning physics through simulations.</p>
+                    <p class="mt-3">Created by <a href="https://alimulavro.netlify.app" target="_blank">Alimul Avro</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 PhysicsLab. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTop" class="scroll-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/simulations.js"></script>
+</body>
+</html> 

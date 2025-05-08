@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lens Simulator - PhysicsLab</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .simulation-container {
+            padding: 20px;
+            background: var(--glass-bg);
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .simulation-controls {
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--glass-bg);
+            border-radius: 10px;
+        }
+        
+        .simulation-controls label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .simulation-controls input[type="range"] {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .simulation-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .simulation-buttons button {
+            margin: 0 10px;
+        }
+        
+        .simulation-info {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--glass-bg);
+            border-radius: 10px;
+        }
+
+        .lens-controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .lens-control-group {
+            background: var(--glass-bg);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .lens-type-selector {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .lens-type-selector button {
+            margin: 0 10px;
+        }
+
+        .lens-type-selector button.active {
+            background: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <i class="fas fa-atom"></i> PhysicsLab
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#simulations">Simulations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#concepts">Concepts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Simulation Section -->
+    <section class="simulation-section">
+        <div class="container">
+            <h1 class="section-title">Lens Simulator</h1>
+            
+            <div class="simulation-container">
+                <div class="lens-type-selector">
+                    <button class="btn btn-primary glow-button active" data-type="convex">Convex Lens</button>
+                    <button class="btn btn-primary glow-button" data-type="concave">Concave Lens</button>
+                </div>
+                
+                <canvas id="lens-canvas" class="w-100"></canvas>
+                
+                <div class="simulation-controls">
+                    <div class="lens-controls">
+                        <div class="lens-control-group">
+                            <h4>Object Properties</h4>
+                            <div class="mb-3">
+                                <label>Object Distance (cm)</label>
+                                <input type="range" id="object-distance-slider" min="10" max="100" value="50">
+                                <span id="object-distance-value">50</span>
+                            </div>
+                            <div class="mb-3">
+                                <label>Object Height (cm)</label>
+                                <input type="range" id="object-height-slider" min="1" max="20" value="10">
+                                <span id="object-height-value">10</span>
+                            </div>
+                        </div>
+                        
+                        <div class="lens-control-group">
+                            <h4>Lens Properties</h4>
+                            <div class="mb-3">
+                                <label>Focal Length (cm)</label>
+                                <input type="range" id="focal-length-slider" min="10" max="50" value="20">
+                                <span id="focal-length-value">20</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="simulation-info">
+                    <h4>Image Information</h4>
+                    <p>Image Distance: <span id="image-distance">0</span> cm</p>
+                    <p>Image Height: <span id="image-height">0</span> cm</p>
+                    <p>Magnification: <span id="magnification">0</span>x</p>
+                    <p>Image Type: <span id="image-type">-</span></p>
+                </div>
+            </div>
+            
+            <div class="simulation-info">
+                <h3>About Lens Simulator</h3>
+                <p>Explore how light rays interact with different types of lenses and understand image formation through ray diagrams.</p>
+                
+                <h4>Types of Lenses:</h4>
+                <ul>
+                    <li><strong>Convex Lens:</strong> Converges light rays to a focal point</li>
+                    <li><strong>Concave Lens:</strong> Diverges light rays from a focal point</li>
+                </ul>
+                
+                <h4>Key Concepts:</h4>
+                <ul>
+                    <li>Focal Point: The point where parallel light rays converge or appear to diverge from</li>
+                    <li>Focal Length: The distance between the lens and the focal point</li>
+                    <li>Object Distance: The distance between the object and the lens</li>
+                    <li>Image Distance: The distance between the image and the lens</li>
+                    <li>Magnification: The ratio of image height to object height</li>
+                </ul>
+                
+                <h4>Lens Equation:</h4>
+                <p>1/f = 1/do + 1/di</p>
+                <p>where:</p>
+                <ul>
+                    <li>f = focal length</li>
+                    <li>do = object distance</li>
+                    <li>di = image distance</li>
+                </ul>
+                
+                <h4>Magnification Equation:</h4>
+                <p>M = -di/do = hi/ho</p>
+                <p>where:</p>
+                <ul>
+                    <li>M = magnification</li>
+                    <li>hi = image height</li>
+                    <li>ho = object height</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../index.html#simulations">Simulations</a></li>
+                        <li><a href="../index.html#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Connect</h5>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h5>About</h5>
+                    <p>PhysicsLab is an interactive platform for learning physics through simulations.</p>
+                    <p class="mt-3">Created by <a href="https://alimulavro.netlify.app" target="_blank">Alimul Avro</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PhysicsLab. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTop" class="scroll-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/main.js"></script>
+    <script src="../js/simulations.js"></script>
+</body>
+</html> 

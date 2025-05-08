@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projectile Motion - PhysicsLab</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Local style overrides for better contrast in dark mode */
+        [data-theme="dark"] .axis-label {
+            fill: var(--text-color);
+            color: var(--text-color);
+        }
+        
+        [data-theme="dark"] canvas {
+            background: rgba(26, 26, 46, 0.8);
+        }
+        
+        [data-theme="dark"] .parameter-value {
+            color: var(--accent-color);
+        }
+
+        [data-theme="dark"] .info-card {
+            background: rgba(26, 26, 46, 0.8);
+        }
+
+        [data-theme="dark"] .equation-card {
+            background: rgba(26, 26, 46, 0.8);
+        }
+
+        [data-theme="dark"] .control-group label {
+            color: var(--text-color);
+        }
+
+        [data-theme="dark"] .form-check-label {
+            color: var(--text-color);
+        }
+
+        /* Back to top button styles */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--accent-color);
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Space Animation Elements -->
+    <div class="stars"></div>
+    <div class="nebula"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <i class="fas fa-atom"></i> PhysicsLab
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="../index.html#simulations">Simulations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#concepts">Concepts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="glass-card">
+                    <h1 class="text-center mb-4">Projectile Motion</h1>
+                    
+                    <!-- Simulation Canvas -->
+                    <div class="simulation-container mb-4">
+                        <canvas id="projectileCanvas" width="600" height="400"></canvas>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="controls-section mb-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <label>Initial Height (m):</label>
+                                    <input type="range" id="heightSlider" min="0" max="20" value="10" class="form-range">
+                                    <span id="heightValue">10 m</span>
+                                </div>
+                                <div class="control-group">
+                                    <label>Initial Speed (m/s):</label>
+                                    <input type="range" id="speedSlider" min="1" max="30" value="15" class="form-range">
+                                    <span id="speedValue">15 m/s</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <label>Angle (degrees):</label>
+                                    <input type="range" id="angleSlider" min="0" max="90" value="45" class="form-range">
+                                    <span id="angleValue">45°</span>
+                                </div>
+                                <div class="control-group">
+                                    <label>Gravity (m/s²):</label>
+                                    <input type="range" id="gravitySlider" min="1" max="20" value="9.8" step="0.1" class="form-range">
+                                    <span id="gravityValue">9.8 m/s²</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12 text-center">
+                                <button id="startBtn" class="btn btn-primary me-2">Start</button>
+                                <button id="resetBtn" class="btn btn-secondary">Reset</button>
+                                <div class="form-check form-check-inline ms-3">
+                                    <input class="form-check-input" type="checkbox" id="slowMotion">
+                                    <label class="form-check-label" for="slowMotion">Slow Motion</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Projectile Information -->
+                    <div class="info-section">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="info-card">
+                                    <h4>Position</h4>
+                                    <p>X: <span id="infoX" class="parameter-value">0</span> m</p>
+                                    <p>Y: <span id="infoY" class="parameter-value">10</span> m</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="info-card">
+                                    <h4>Velocity</h4>
+                                    <p>Vx: <span id="infoVx" class="parameter-value">10.6</span> m/s</p>
+                                    <p>Vy: <span id="infoVy" class="parameter-value">10.6</span> m/s</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="info-card">
+                                    <h4>Time</h4>
+                                    <p>Elapsed: <span id="infoTime" class="parameter-value">0</span> s</p>
+                                    <p>Range: <span id="infoRange" class="parameter-value">0</span> m</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="glass-card">
+                    <h4 class="mb-4">Projectile Motion Equations</h4>
+                    
+                    <div class="equation-card">
+                        <h5>Horizontal Motion</h5>
+                        <p>x = v₀ * cos(θ) * t</p>
+                        <p>vx = v₀ * cos(θ)</p>
+                    </div>
+
+                    <div class="equation-card">
+                        <h5>Vertical Motion</h5>
+                        <p>y = y₀ + v₀ * sin(θ) * t - ½ * g * t²</p>
+                        <p>vy = v₀ * sin(θ) - g * t</p>
+                    </div>
+
+                    <div class="equation-card">
+                        <h5>Time of Flight</h5>
+                        <p>t = (v₀ * sin(θ) + √(v₀² * sin²(θ) + 2 * g * y₀)) / g</p>
+                    </div>
+
+                    <div class="equation-card">
+                        <h5>Maximum Height</h5>
+                        <p>h = y₀ + (v₀² * sin²(θ)) / (2 * g)</p>
+                    </div>
+
+                    <div class="equation-card">
+                        <h5>Range</h5>
+                        <p>R = (v₀² * sin(2θ)) / g</p>
+                    </div>
+
+                    <div class="equation-card">
+                        <h5>Current Parameters</h5>
+                        <p>Initial Height (y₀): <span id="paramHeight" class="parameter-value">10</span> m</p>
+                        <p>Initial Speed (v₀): <span id="paramSpeed" class="parameter-value">15</span> m/s</p>
+                        <p>Launch Angle (θ): <span id="paramAngle" class="parameter-value">45</span>°</p>
+                        <p>Gravity (g): <span id="paramGravity" class="parameter-value">9.8</span> m/s²</p>
+                        <p>Max Height: <span id="paramMaxHeight" class="parameter-value">0</span> m</p>
+                        <p>Time of Flight: <span id="paramTimeOfFlight" class="parameter-value">0</span> s</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>About PhysicsLab</h5>
+                    <p>An interactive platform for learning physics through simulations and demonstrations.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../index.html#simulations">Simulations</a></li>
+                        <li><a href="../index.html#concepts">Concepts</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contact</h5>
+                    <p>Created by <a href="https://alimulavro.netlify.app" target="_blank">Alimul Avro</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        // Back to top functionality
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        const canvas = document.getElementById('projectileCanvas');
+        const ctx = canvas.getContext('2d');
+        let animationId;
+
+        // Projectile parameters
+        let projectile = {
+            x: 0,
+            y: 10,
+            vx: 0,
+            vy: 0,
+            time: 0,
+            isMoving: false,
+            initialHeight: 10,
+            initialSpeed: 15,
+            angle: 45,
+            gravity: 9.8
+        };
+
+        // Scale factors for visualization
+        const scaleX = canvas.width / 60;  // 60 meters wide
+        const scaleY = canvas.height / 30; // 30 meters high
+
+        // Update projectile parameters from controls
+        document.getElementById('heightSlider').oninput = function() {
+            projectile.initialHeight = parseFloat(this.value);
+            document.getElementById('heightValue').textContent = this.value + ' m';
+            document.getElementById('paramHeight').textContent = this.value;
+            resetProjectile();
+        };
+
+        document.getElementById('speedSlider').oninput = function() {
+            projectile.initialSpeed = parseFloat(this.value);
+            document.getElementById('speedValue').textContent = this.value + ' m/s';
+            document.getElementById('paramSpeed').textContent = this.value;
+            resetProjectile();
+        };
+
+        document.getElementById('angleSlider').oninput = function() {
+            projectile.angle = parseFloat(this.value);
+            document.getElementById('angleValue').textContent = this.value + '°';
+            document.getElementById('paramAngle').textContent = this.value;
+            resetProjectile();
+        };
+
+        document.getElementById('gravitySlider').oninput = function() {
+            projectile.gravity = parseFloat(this.value);
+            document.getElementById('gravityValue').textContent = this.value + ' m/s²';
+            document.getElementById('paramGravity').textContent = this.value;
+            resetProjectile();
+        };
+
+        document.getElementById('startBtn').onclick = function() {
+            if (!projectile.isMoving) {
+                startProjectile();
+            }
+        };
+
+        document.getElementById('resetBtn').onclick = resetProjectile;
+
+        function calculateParameters() {
+            const angleRad = (projectile.angle * Math.PI) / 180;
+            const v0y = projectile.initialSpeed * Math.sin(angleRad);
+            
+            // Calculate maximum height
+            const maxHeight = projectile.initialHeight + (v0y * v0y) / (2 * projectile.gravity);
+            
+            // Calculate time of flight
+            const timeOfFlight = (v0y + Math.sqrt(v0y * v0y + 2 * projectile.gravity * projectile.initialHeight)) / projectile.gravity;
+            
+            return { maxHeight, timeOfFlight };
+        }
+
+        function startProjectile() {
+            const angleRad = (projectile.angle * Math.PI) / 180;
+            projectile.vx = projectile.initialSpeed * Math.cos(angleRad);
+            projectile.vy = projectile.initialSpeed * Math.sin(angleRad);
+            projectile.isMoving = true;
+            projectile.time = 0;
+            
+            const params = calculateParameters();
+            document.getElementById('paramMaxHeight').textContent = params.maxHeight.toFixed(2);
+            document.getElementById('paramTimeOfFlight').textContent = params.timeOfFlight.toFixed(2);
+            
+            animate();
+        }
+
+        function resetProjectile() {
+            projectile.x = 0;
+            projectile.y = projectile.initialHeight;
+            projectile.vx = 0;
+            projectile.vy = 0;
+            projectile.time = 0;
+            projectile.isMoving = false;
+            cancelAnimationFrame(animationId);
+            drawProjectile();
+            updateInfo();
+        }
+
+        function animate() {
+            if (!projectile.isMoving) return;
+
+            const timeStep = document.getElementById('slowMotion').checked ? 0.016 : 0.032;
+            projectile.time += timeStep;
+            
+            // Update position
+            projectile.x = projectile.vx * projectile.time;
+            projectile.y = projectile.initialHeight + 
+                          projectile.vy * projectile.time - 
+                          0.5 * projectile.gravity * projectile.time * projectile.time;
+
+            // Check if projectile has hit the ground
+            if (projectile.y <= 0) {
+                projectile.y = 0;
+                projectile.isMoving = false;
+                updateInfo();
+                return;
+            }
+
+            drawProjectile();
+            updateInfo();
+            animationId = requestAnimationFrame(animate);
+        }
+
+        function drawProjectile() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw grid
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < canvas.width; i += 50) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, canvas.height);
+                ctx.stroke();
+            }
+            for (let i = 0; i < canvas.height; i += 50) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(canvas.width, i);
+                ctx.stroke();
+            }
+
+            // Draw axes
+            ctx.strokeStyle = '#2d3436';
+            ctx.lineWidth = 2;
+            
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height - 2);
+            ctx.lineTo(canvas.width, canvas.height - 2);
+            ctx.stroke();
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(2, 0);
+            ctx.lineTo(2, canvas.height);
+            ctx.stroke();
+
+            // Draw axis labels
+            ctx.fillStyle = '#2d3436';
+            ctx.font = '14px Arial';
+            ctx.fillText('Distance (m)', canvas.width - 100, canvas.height - 10);
+            ctx.save();
+            ctx.translate(20, canvas.height/2);
+            ctx.rotate(-Math.PI/2);
+            ctx.fillText('Height (m)', 0, 0);
+            ctx.restore();
+
+            // Draw scale markers
+            for (let i = 0; i <= 60; i += 10) {
+                ctx.beginPath();
+                ctx.moveTo(i * scaleX, canvas.height - 2);
+                ctx.lineTo(i * scaleX, canvas.height + 8);
+                ctx.stroke();
+                ctx.fillText(i.toString(), i * scaleX - 5, canvas.height + 20);
+            }
+            for (let i = 0; i <= 30; i += 5) {
+                ctx.beginPath();
+                ctx.moveTo(2, canvas.height - i * scaleY);
+                ctx.lineTo(12, canvas.height - i * scaleY);
+                ctx.stroke();
+                ctx.fillText(i.toString(), 15, canvas.height - i * scaleY + 5);
+            }
+
+            // Draw projectile
+            ctx.beginPath();
+            ctx.arc(
+                projectile.x * scaleX,
+                canvas.height - projectile.y * scaleY,
+                5, 0, Math.PI * 2
+            );
+            ctx.fillStyle = '#4a90e2';
+            ctx.fill();
+
+            // Draw trajectory
+            if (projectile.isMoving) {
+                ctx.beginPath();
+                ctx.moveTo(0, canvas.height - projectile.initialHeight * scaleY);
+                
+                const steps = 100;
+                for (let i = 0; i <= steps; i++) {
+                    const t = (i / steps) * projectile.time;
+                    const x = projectile.vx * t;
+                    const y = projectile.initialHeight + 
+                             projectile.vy * t - 
+                             0.5 * projectile.gravity * t * t;
+                    
+                    if (y >= 0) {
+                        ctx.lineTo(
+                            x * scaleX,
+                            canvas.height - y * scaleY
+                        );
+                    }
+                }
+                
+                ctx.strokeStyle = 'rgba(74, 144, 226, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+        }
+
+        function updateInfo() {
+            document.getElementById('infoX').textContent = projectile.x.toFixed(2);
+            document.getElementById('infoY').textContent = projectile.y.toFixed(2);
+            document.getElementById('infoVx').textContent = projectile.vx.toFixed(2);
+            document.getElementById('infoVy').textContent = 
+                (projectile.vy - projectile.gravity * projectile.time).toFixed(2);
+            document.getElementById('infoTime').textContent = projectile.time.toFixed(2);
+            document.getElementById('infoRange').textContent = 
+                (projectile.isMoving ? 0 : projectile.x).toFixed(2);
+        }
+
+        // Initialize
+        resetProjectile();
+
+        // Cleanup on page unload
+        window.onunload = function() {
+            cancelAnimationFrame(animationId);
+        };
+    </script>
+</body>
+</html> 

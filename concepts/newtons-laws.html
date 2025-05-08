@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newton's Laws of Motion - PhysicsLab</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Space Animation Elements -->
+    <div class="stars"></div>
+    <div class="nebula"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <i class="fas fa-atom"></i> PhysicsLab
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#simulations">Simulations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="../index.html#concepts">Concepts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="glass-card">
+                    <h1 class="text-center mb-4">Newton's Laws of Motion</h1>
+                    
+                    <!-- First Law -->
+                    <div class="concept-section mb-5">
+                        <h2>First Law: Law of Inertia</h2>
+                        <p>An object at rest stays at rest, and an object in motion stays in motion unless acted upon by an external force.</p>
+                        <div class="demo-container">
+                            <canvas id="inertiaDemo" width="600" height="200"></canvas>
+                            <div class="controls mt-3">
+                                <button class="glow-button" onclick="startInertiaDemo()">Start Demo</button>
+                                <button class="glow-button" onclick="resetInertiaDemo()">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Second Law -->
+                    <div class="concept-section mb-5">
+                        <h2>Second Law: Force and Acceleration</h2>
+                        <p>Force equals mass times acceleration (F = ma). The acceleration of an object is directly proportional to the net force acting on it and inversely proportional to its mass.</p>
+                        <div class="demo-container">
+                            <canvas id="forceDemo" width="600" height="200"></canvas>
+                            <div class="controls mt-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Mass (kg):</label>
+                                        <input type="range" id="massSlider" min="1" max="10" value="5" class="form-range">
+                                        <span id="massValue">5 kg</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Force (N):</label>
+                                        <input type="range" id="forceSlider" min="1" max="50" value="20" class="form-range">
+                                        <span id="forceValue">20 N</span>
+                                    </div>
+                                </div>
+                                <button class="glow-button mt-3" onclick="startForceDemo()">Apply Force</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Third Law -->
+                    <div class="concept-section mb-5">
+                        <h2>Third Law: Action and Reaction</h2>
+                        <p>For every action, there is an equal and opposite reaction.</p>
+                        <div class="demo-container">
+                            <canvas id="reactionDemo" width="600" height="200"></canvas>
+                            <div class="controls mt-3">
+                                <button class="glow-button" onclick="startReactionDemo()">Start Demo</button>
+                                <button class="glow-button" onclick="resetReactionDemo()">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>About PhysicsLab</h5>
+                    <p>An interactive platform for learning physics through simulations and demonstrations.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../index.html#simulations">Simulations</a></li>
+                        <li><a href="../index.html#concepts">Concepts</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contact</h5>
+                    <p>Created by <a href="https://alimulavro.netlify.app" target="_blank">Alimul Avro</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        // First Law Demo
+        let inertiaCanvas = document.getElementById('inertiaDemo');
+        let inertiaCtx = inertiaCanvas.getContext('2d');
+        let box = { x: 50, y: 100, width: 50, height: 50, velocity: 0 };
+        let friction = 0.98;
+        let isMoving = false;
+
+        function startInertiaDemo() {
+            isMoving = true;
+            box.velocity = 5;
+            animateInertia();
+        }
+
+        function resetInertiaDemo() {
+            isMoving = false;
+            box.x = 50;
+            box.velocity = 0;
+            drawInertiaDemo();
+        }
+
+        function animateInertia() {
+            if (!isMoving) return;
+            
+            box.x += box.velocity;
+            box.velocity *= friction;
+            
+            if (box.velocity < 0.1) {
+                isMoving = false;
+            }
+            
+            drawInertiaDemo();
+            requestAnimationFrame(animateInertia);
+        }
+
+        function drawInertiaDemo() {
+            inertiaCtx.clearRect(0, 0, inertiaCanvas.width, inertiaCanvas.height);
+            
+            // Draw ground
+            inertiaCtx.beginPath();
+            inertiaCtx.moveTo(0, 150);
+            inertiaCtx.lineTo(inertiaCanvas.width, 150);
+            inertiaCtx.strokeStyle = '#666';
+            inertiaCtx.stroke();
+            
+            // Draw box
+            inertiaCtx.fillStyle = '#4a90e2';
+            inertiaCtx.fillRect(box.x, box.y, box.width, box.height);
+        }
+
+        // Second Law Demo
+        let forceCanvas = document.getElementById('forceDemo');
+        let forceCtx = forceCanvas.getContext('2d');
+        let massSlider = document.getElementById('massSlider');
+        let forceSlider = document.getElementById('forceSlider');
+        let massValue = document.getElementById('massValue');
+        let forceValue = document.getElementById('forceValue');
+        let object = { x: 50, y: 100, width: 50, height: 50, velocity: 0 };
+        let isApplyingForce = false;
+
+        massSlider.oninput = function() {
+            massValue.textContent = this.value + ' kg';
+        }
+
+        forceSlider.oninput = function() {
+            forceValue.textContent = this.value + ' N';
+        }
+
+        function startForceDemo() {
+            isApplyingForce = true;
+            const mass = parseFloat(massSlider.value);
+            const force = parseFloat(forceSlider.value);
+            object.velocity = force / mass;
+            animateForce();
+        }
+
+        function animateForce() {
+            if (!isApplyingForce) return;
+            
+            object.x += object.velocity;
+            
+            if (object.x > forceCanvas.width - object.width) {
+                isApplyingForce = false;
+            }
+            
+            drawForceDemo();
+            requestAnimationFrame(animateForce);
+        }
+
+        function drawForceDemo() {
+            forceCtx.clearRect(0, 0, forceCanvas.width, forceCanvas.height);
+            
+            // Draw ground
+            forceCtx.beginPath();
+            forceCtx.moveTo(0, 150);
+            forceCtx.lineTo(forceCanvas.width, 150);
+            forceCtx.strokeStyle = '#666';
+            forceCtx.stroke();
+            
+            // Draw object
+            forceCtx.fillStyle = '#4a90e2';
+            forceCtx.fillRect(object.x, object.y, object.width, object.height);
+        }
+
+        // Third Law Demo
+        let reactionCanvas = document.getElementById('reactionDemo');
+        let reactionCtx = reactionCanvas.getContext('2d');
+        let rocket = { x: 200, y: 100, width: 40, height: 20 };
+        let exhaust = { x: rocket.x, y: rocket.y + rocket.height/2, width: 20, height: 10 };
+        let isRocketMoving = false;
+
+        function startReactionDemo() {
+            isRocketMoving = true;
+            animateReaction();
+        }
+
+        function resetReactionDemo() {
+            isRocketMoving = false;
+            rocket.x = 200;
+            exhaust.x = rocket.x;
+            drawReactionDemo();
+        }
+
+        function animateReaction() {
+            if (!isRocketMoving) return;
+            
+            rocket.x += 2;
+            exhaust.x = rocket.x - exhaust.width;
+            
+            if (rocket.x > reactionCanvas.width - rocket.width) {
+                isRocketMoving = false;
+            }
+            
+            drawReactionDemo();
+            requestAnimationFrame(animateReaction);
+        }
+
+        function drawReactionDemo() {
+            reactionCtx.clearRect(0, 0, reactionCanvas.width, reactionCanvas.height);
+            
+            // Draw rocket
+            reactionCtx.fillStyle = '#4a90e2';
+            reactionCtx.fillRect(rocket.x, rocket.y, rocket.width, rocket.height);
+            
+            // Draw exhaust
+            reactionCtx.fillStyle = '#ff6b6b';
+            reactionCtx.fillRect(exhaust.x, exhaust.y, exhaust.width, exhaust.height);
+        }
+
+        // Initial draw
+        drawInertiaDemo();
+        drawForceDemo();
+        drawReactionDemo();
+    </script>
+</body>
+</html> 

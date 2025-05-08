@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electric Circuits - PhysicsLab</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Space Animation Elements -->
+    <div class="stars"></div>
+    <div class="nebula"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <i class="fas fa-atom"></i> PhysicsLab
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#simulations">Simulations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="../index.html#concepts">Concepts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="glass-card">
+                    <h1 class="text-center mb-4">Electric Circuits</h1>
+                    
+                    <!-- Ohm's Law -->
+                    <div class="concept-section mb-5">
+                        <h2>Ohm's Law</h2>
+                        <p>Voltage (V) equals current (I) times resistance (R): V = IR</p>
+                        <div class="demo-container">
+                            <canvas id="ohmsLawDemo" width="600" height="200"></canvas>
+                            <div class="controls mt-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Voltage (V):</label>
+                                        <input type="range" id="voltageSlider" min="1" max="12" value="6" class="form-range">
+                                        <span id="voltageValue">6 V</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Resistance (Ω):</label>
+                                        <input type="range" id="resistanceSlider" min="1" max="100" value="50" class="form-range">
+                                        <span id="resistanceValue">50 Ω</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Current (A):</label>
+                                        <span id="currentValue">0.12 A</span>
+                                    </div>
+                                </div>
+                                <button class="glow-button mt-3" onclick="updateOhmsLaw()">Update Circuit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Series Circuit -->
+                    <div class="concept-section mb-5">
+                        <h2>Series Circuit</h2>
+                        <p>In a series circuit, components are connected end-to-end, and the same current flows through all components.</p>
+                        <div class="demo-container">
+                            <canvas id="seriesDemo" width="600" height="200"></canvas>
+                            <div class="controls mt-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Battery Voltage:</label>
+                                        <input type="range" id="seriesVoltageSlider" min="1" max="12" value="6" class="form-range">
+                                        <span id="seriesVoltageValue">6 V</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Resistor 1 (Ω):</label>
+                                        <input type="range" id="resistor1Slider" min="1" max="100" value="50" class="form-range">
+                                        <span id="resistor1Value">50 Ω</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Resistor 2 (Ω):</label>
+                                        <input type="range" id="resistor2Slider" min="1" max="100" value="50" class="form-range">
+                                        <span id="resistor2Value">50 Ω</span>
+                                    </div>
+                                </div>
+                                <button class="glow-button mt-3" onclick="updateSeriesCircuit()">Update Circuit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Parallel Circuit -->
+                    <div class="concept-section mb-5">
+                        <h2>Parallel Circuit</h2>
+                        <p>In a parallel circuit, components are connected across the same voltage source, and the current splits between them.</p>
+                        <div class="demo-container">
+                            <canvas id="parallelDemo" width="600" height="200"></canvas>
+                            <div class="controls mt-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Battery Voltage:</label>
+                                        <input type="range" id="parallelVoltageSlider" min="1" max="12" value="6" class="form-range">
+                                        <span id="parallelVoltageValue">6 V</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Resistor 1 (Ω):</label>
+                                        <input type="range" id="parallelResistor1Slider" min="1" max="100" value="50" class="form-range">
+                                        <span id="parallelResistor1Value">50 Ω</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Resistor 2 (Ω):</label>
+                                        <input type="range" id="parallelResistor2Slider" min="1" max="100" value="50" class="form-range">
+                                        <span id="parallelResistor2Value">50 Ω</span>
+                                    </div>
+                                </div>
+                                <button class="glow-button mt-3" onclick="updateParallelCircuit()">Update Circuit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>About PhysicsLab</h5>
+                    <p>An interactive platform for learning physics through simulations and demonstrations.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../index.html#simulations">Simulations</a></li>
+                        <li><a href="../index.html#concepts">Concepts</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contact</h5>
+                    <p>Created by <a href="https://alimulavro.netlify.app" target="_blank">Alimul Avro</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        // Ohm's Law Demo
+        let ohmsLawCanvas = document.getElementById('ohmsLawDemo');
+        let ohmsLawCtx = ohmsLawCanvas.getContext('2d');
+        let voltageSlider = document.getElementById('voltageSlider');
+        let resistanceSlider = document.getElementById('resistanceSlider');
+        let currentValue = document.getElementById('currentValue');
+
+        function updateOhmsLaw() {
+            const voltage = parseFloat(voltageSlider.value);
+            const resistance = parseFloat(resistanceSlider.value);
+            const current = voltage / resistance;
+            currentValue.textContent = current.toFixed(2) + ' A';
+            drawOhmsLawDemo(voltage, resistance, current);
+        }
+
+        function drawOhmsLawDemo(voltage, resistance, current) {
+            ohmsLawCtx.clearRect(0, 0, ohmsLawCanvas.width, ohmsLawCanvas.height);
+            
+            // Draw battery
+            ohmsLawCtx.fillStyle = '#4a90e2';
+            ohmsLawCtx.fillRect(50, 50, 40, 100);
+            
+            // Draw resistor
+            ohmsLawCtx.fillStyle = '#6c5ce7';
+            ohmsLawCtx.fillRect(200, 75, 100, 50);
+            
+            // Draw wires
+            ohmsLawCtx.beginPath();
+            ohmsLawCtx.moveTo(90, 100);
+            ohmsLawCtx.lineTo(200, 100);
+            ohmsLawCtx.moveTo(300, 100);
+            ohmsLawCtx.lineTo(400, 100);
+            ohmsLawCtx.strokeStyle = '#2d3436';
+            ohmsLawCtx.stroke();
+            
+            // Draw labels
+            ohmsLawCtx.fillStyle = '#2d3436';
+            ohmsLawCtx.font = '14px Arial';
+            ohmsLawCtx.fillText(voltage + 'V', 40, 40);
+            ohmsLawCtx.fillText(resistance + 'Ω', 220, 70);
+            ohmsLawCtx.fillText(current.toFixed(2) + 'A', 320, 40);
+        }
+
+        // Series Circuit Demo
+        let seriesCanvas = document.getElementById('seriesDemo');
+        let seriesCtx = seriesCanvas.getContext('2d');
+        let seriesVoltageSlider = document.getElementById('seriesVoltageSlider');
+        let resistor1Slider = document.getElementById('resistor1Slider');
+        let resistor2Slider = document.getElementById('resistor2Slider');
+
+        function updateSeriesCircuit() {
+            const voltage = parseFloat(seriesVoltageSlider.value);
+            const r1 = parseFloat(resistor1Slider.value);
+            const r2 = parseFloat(resistor2Slider.value);
+            const current = voltage / (r1 + r2);
+            drawSeriesCircuit(voltage, r1, r2, current);
+        }
+
+        function drawSeriesCircuit(voltage, r1, r2, current) {
+            seriesCtx.clearRect(0, 0, seriesCanvas.width, seriesCanvas.height);
+            
+            // Draw battery
+            seriesCtx.fillStyle = '#4a90e2';
+            seriesCtx.fillRect(50, 50, 40, 100);
+            
+            // Draw resistors
+            seriesCtx.fillStyle = '#6c5ce7';
+            seriesCtx.fillRect(150, 75, 100, 50);
+            seriesCtx.fillRect(350, 75, 100, 50);
+            
+            // Draw wires
+            seriesCtx.beginPath();
+            seriesCtx.moveTo(90, 100);
+            seriesCtx.lineTo(150, 100);
+            seriesCtx.moveTo(250, 100);
+            seriesCtx.lineTo(350, 100);
+            seriesCtx.moveTo(450, 100);
+            seriesCtx.lineTo(500, 100);
+            seriesCtx.strokeStyle = '#2d3436';
+            seriesCtx.stroke();
+            
+            // Draw labels
+            seriesCtx.fillStyle = '#2d3436';
+            seriesCtx.font = '14px Arial';
+            seriesCtx.fillText(voltage + 'V', 40, 40);
+            seriesCtx.fillText(r1 + 'Ω', 170, 70);
+            seriesCtx.fillText(r2 + 'Ω', 370, 70);
+            seriesCtx.fillText(current.toFixed(2) + 'A', 270, 40);
+        }
+
+        // Parallel Circuit Demo
+        let parallelCanvas = document.getElementById('parallelDemo');
+        let parallelCtx = parallelCanvas.getContext('2d');
+        let parallelVoltageSlider = document.getElementById('parallelVoltageSlider');
+        let parallelResistor1Slider = document.getElementById('parallelResistor1Slider');
+        let parallelResistor2Slider = document.getElementById('parallelResistor2Slider');
+
+        function updateParallelCircuit() {
+            const voltage = parseFloat(parallelVoltageSlider.value);
+            const r1 = parseFloat(parallelResistor1Slider.value);
+            const r2 = parseFloat(parallelResistor2Slider.value);
+            const i1 = voltage / r1;
+            const i2 = voltage / r2;
+            const totalCurrent = i1 + i2;
+            drawParallelCircuit(voltage, r1, r2, i1, i2, totalCurrent);
+        }
+
+        function drawParallelCircuit(voltage, r1, r2, i1, i2, totalCurrent) {
+            parallelCtx.clearRect(0, 0, parallelCanvas.width, parallelCanvas.height);
+            
+            // Draw battery
+            parallelCtx.fillStyle = '#4a90e2';
+            parallelCtx.fillRect(50, 50, 40, 100);
+            
+            // Draw resistors
+            parallelCtx.fillStyle = '#6c5ce7';
+            parallelCtx.fillRect(150, 50, 100, 50);
+            parallelCtx.fillRect(150, 100, 100, 50);
+            
+            // Draw wires
+            parallelCtx.beginPath();
+            parallelCtx.moveTo(90, 75);
+            parallelCtx.lineTo(150, 75);
+            parallelCtx.moveTo(90, 125);
+            parallelCtx.lineTo(150, 125);
+            parallelCtx.moveTo(250, 75);
+            parallelCtx.lineTo(300, 75);
+            parallelCtx.moveTo(250, 125);
+            parallelCtx.lineTo(300, 125);
+            parallelCtx.strokeStyle = '#2d3436';
+            parallelCtx.stroke();
+            
+            // Draw labels
+            parallelCtx.fillStyle = '#2d3436';
+            parallelCtx.font = '14px Arial';
+            parallelCtx.fillText(voltage + 'V', 40, 40);
+            parallelCtx.fillText(r1 + 'Ω', 170, 70);
+            parallelCtx.fillText(r2 + 'Ω', 170, 120);
+            parallelCtx.fillText(i1.toFixed(2) + 'A', 270, 70);
+            parallelCtx.fillText(i2.toFixed(2) + 'A', 270, 120);
+            parallelCtx.fillText('Total: ' + totalCurrent.toFixed(2) + 'A', 270, 40);
+        }
+
+        // Initialize all demos
+        updateOhmsLaw();
+        updateSeriesCircuit();
+        updateParallelCircuit();
+
+        // Add event listeners for sliders
+        voltageSlider.oninput = updateOhmsLaw;
+        resistanceSlider.oninput = updateOhmsLaw;
+        seriesVoltageSlider.oninput = updateSeriesCircuit;
+        resistor1Slider.oninput = updateSeriesCircuit;
+        resistor2Slider.oninput = updateSeriesCircuit;
+        parallelVoltageSlider.oninput = updateParallelCircuit;
+        parallelResistor1Slider.oninput = updateParallelCircuit;
+        parallelResistor2Slider.oninput = updateParallelCircuit;
+    </script>
+</body>
+</html> 
