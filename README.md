@@ -101,9 +101,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-Alimul AVRO - [@alimulavro](https://twitter.com/alimulavro)
+Alimul AVRO - [@alimulavro](https://alimulavro.netlify.app/)
 
-Project Link: [https://github.com/yourusername/physics-lab](https://github.com/yourusername/physics-lab)
+Project Link: [https://github.com/avro-alimul/Physics-sim-Lab)
 
 ## Acknowledgments
 
